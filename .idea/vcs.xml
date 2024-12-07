@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="VcsDirectoryMappings">
+    <mapping directory="$PROJECT_DIR$" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/ticketing-system-back-end" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/ticketing-system-front-end" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/ticketing-system-front-end/TicketingFRONT" vcs="Git" />
+  </component>
+</project>
