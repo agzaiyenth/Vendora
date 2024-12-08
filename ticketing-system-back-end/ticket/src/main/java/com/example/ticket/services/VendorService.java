@@ -1,11 +1,12 @@
 package com.example.ticket.services;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+
 import com.example.ticket.models.Ticket;
 
+import java.util.logging.Logger;
+
 public class VendorService implements Runnable {
-    private static final Logger logger = LoggerFactory.getLogger(VendorService.class);
+    private static final java.util.logging.Logger logger = Logger.getLogger(TicketPoolService.class.getName());
     private TicketPoolService ticketPoolService;
     private int vendorId;
     private int ticketReleaseRate;
@@ -33,11 +34,11 @@ public class VendorService implements Runnable {
                 if (ticketPoolService != null) {
                     if (ticketPoolService.getAvailableTickets()
                             + ticketPoolService.getTicketsSold() >= ticketPoolService.getMaxEventTickets()) {
-                        logger.warn("Vendor {} cannot add ticket. Maximum event ticket limit reached.", vendorId);
+                        logger.severe("Vendor "+vendorId+" cannot add ticket. Maximum event ticket limit reached.");
                         return;
                     }
                     if (ticketPoolService.getAvailableTickets() >= ticketPoolService.getMaxPoolTickets()) {
-                        logger.info("Vendor {} waiting, max pool limit reached.", vendorId);
+                        logger.info("Vendor "+vendorId+" waiting, max pool limit reached.");
                         continue;
                     }
                     Ticket ticket = new Ticket(ticketId++);
@@ -45,7 +46,7 @@ public class VendorService implements Runnable {
                 }
             } catch (InterruptedException e) {
                 Thread.currentThread().interrupt();
-                logger.warn("Vendor {} interrupted.", vendorId);
+                logger.severe("Vendor "+vendorId+" interrupted.");
                 break;
             }
         }

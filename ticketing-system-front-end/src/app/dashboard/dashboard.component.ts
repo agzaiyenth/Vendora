@@ -39,61 +39,12 @@ export class DashboardComponent implements OnInit, OnDestroy {
   message?: string;
   private pollingSubscription?: Subscription;
   private isStopped: boolean = false;
+  logs: string[] = [];
 
   public chartOptions: Partial<ChartOptions> | any;
 
   constructor(private http: HttpClient) {
-    this.chartOptions = {
-      series: [
-        {
-          name: 'Available Tickets',
-          data: [],
-        },
-        {
-          name: 'Tickets Sold',
-          data: [],
-        },
-      ],
-      chart: {
-        type: 'line',
-        height: 350,
-        animations: {
-          enabled: true,
-          easing: 'linear',
-          dynamicAnimation: {
-            speed: 300, // Animation speed for smooth movement
-          },
-        },
-        toolbar: {
-          show: false, // Hide toolbar
-        },
-      },
-      xaxis: {
-        labels: { show: false }, // Hide x-axis labels
-        axisBorder: { show: false },
-        axisTicks: { show: false },
-        tooltip: { enabled: false },
-      },
-      yaxis: {
-        labels: { show: false }, // Hide y-axis labels
-        axisBorder: { show: false },
-        axisTicks: { show: false },
-        tooltip: { enabled: false },
-      },
-      grid: {
-        show: false, // Hide grid
-      },
-      stroke: {
-        curve: 'smooth', // Smooth line
-        width: 2,
-      },
-      tooltip: {
-        enabled: false,
-        x: {
-          format: 'HH:mm:ss', // Format for x-axis tooltips
-        },
-      },
-    };
+    
   }
 
   ngOnInit(): void {
@@ -101,6 +52,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
     this.pollingSubscription = interval(10).subscribe(() => {
       this.getTicketCount();
     });
+    this.addLog('Dashboard initialized.');
   }
 
   startPolling() {
@@ -143,8 +95,10 @@ export class DashboardComponent implements OnInit, OnDestroy {
     ) {
       this.message =
         'Please enter valid positive values for Vendor ID and Ticket  Release Rate.';
+        this.addLog('Invalid vendor input detected.');
       return;
     }
+    this.addLog(`Vendor ${this.vendorId} started with rate ${this.ticketReleaseRate} ms.`);
     this.http
       .post('http://localhost:8080/api/ticketing/start-vendor', null, {
         params: {
@@ -174,8 +128,10 @@ export class DashboardComponent implements OnInit, OnDestroy {
     ) {
       this.message =
         'Please enter valid positive values for Customer ID and Customer Retrieval Rate.';
+        this.addLog('Invalid customer input detected.');
       return;
     }
+    this.addLog(`Customer ${this.customerId} started with rate ${this.customerRetrievalRate} ms.`);
     this.http
       .post('http://localhost:8080/api/ticketing/start-customer', null, {
         params: {
@@ -217,7 +173,15 @@ export class DashboardComponent implements OnInit, OnDestroy {
         this.message = `Max pool tickets set to ${this.maxPoolTickets}`;
       });
   }
+  addLog(message: string): void {
+    const timestamp = new Date().toISOString();
+    this.logs.push(`[${timestamp}] ${message}`);
+  }
 
+  clearLogs(): void {
+    this.logs = [];
+    this.addLog('Logs cleared.');
+  }
   stopAll() {
     this.http
       .post('http://localhost:8080/api/ticketing/stop', null, {
@@ -242,11 +206,13 @@ export class DashboardComponent implements OnInit, OnDestroy {
           if (this.pollingSubscription) {
             this.pollingSubscription.unsubscribe();
           }
+          this.addLog('Emergency stop triggered.');
         },
         (error) => {
           console.error('Error stopping and resetting system', error);
           this.message = 'Failed to stop and reset system.';
         }
+        
       );
   }
   ngOnDestroy(): void {
