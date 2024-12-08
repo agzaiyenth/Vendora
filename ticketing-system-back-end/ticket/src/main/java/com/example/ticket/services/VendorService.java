@@ -6,7 +6,7 @@ import com.example.ticket.models.Ticket;
 import java.util.logging.Logger;
 
 public class VendorService implements Runnable {
-    private static final java.util.logging.Logger logger = Logger.getLogger(TicketPoolService.class.getName());
+    private static final java.util.logging.Logger logger = Logger.getLogger(VendorService.class.getName());
     private TicketPoolService ticketPoolService;
     private int vendorId;
     private int ticketReleaseRate;
