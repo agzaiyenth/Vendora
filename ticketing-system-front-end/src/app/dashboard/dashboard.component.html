@@ -1,7 +1,5 @@
 <div class="dashboard">
   <h1>Ticketing System Dashboard</h1>
-
-  <!-- Available Tickets and Tickets Sold  -->
   <div class="ticket-info">
     <section class="info-box">
       <h3>Available Tickets</h3>
@@ -14,7 +12,6 @@
     </section>
   </div>
 
-  <!-- Start Vendor Section -->
   <div class="ticket-info">
     <section class="input-section">
       <h3>Start Vendor</h3>
@@ -36,7 +33,6 @@
       <button (click)="startVendor()">Start Vendor</button>
     </section>
 
-    <!-- Start Customer Section -->
     <section class="input-section">
       <h3>Start Customer</h3>
       <label>Customer ID:</label>
@@ -58,7 +54,6 @@
     </section>
   </div>
 
-  <!-- Set Maximum Capacity Section -->
   <div class="aside">
     <h3>Set Maximum Tickets</h3>
     <div class="eventval">
@@ -75,7 +70,6 @@
     </div>
   </div>
 
-  <!-- Emergency Stop Button -->
   <button class="emergency-stop" (click)="stopAll()">Stop</button>
 
   <div class="log-console">
@@ -84,7 +78,6 @@
     <button class="clear-logs" (click)="clearLogs()">Clear Logs</button>
   </div>
 
-  <!-- Message Modal for Notifications -->
   <div *ngIf="message" class="modal">
     <div class="modal-content">
       <span class="close-btn" (click)="message = ''">&times;</span>

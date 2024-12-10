@@ -1,31 +1,15 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { interval, Subscription } from 'rxjs';
-import { FormsModule } from '@angular/forms'; // Import FormsModule
+import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
-import {
-  ApexChart,
-  ApexAxisChartSeries,
-  ApexXAxis,
-  ApexTitleSubtitle,
-  ChartComponent,
-} from 'ng-apexcharts';
-import { NgApexchartsModule } from 'ng-apexcharts';
-import ApexCharts from 'apexcharts';
-
-export type ChartOptions = {
-  series: ApexAxisChartSeries;
-  chart: ApexChart;
-  xaxis: ApexXAxis;
-  title: ApexTitleSubtitle;
-};
 
 @Component({
   selector: 'app-dashboard',
   standalone: true,
   templateUrl: './dashboard.component.html',
   styleUrls: ['./dashboard.component.css'],
-  imports: [FormsModule, CommonModule, NgApexchartsModule],
+  imports: [FormsModule, CommonModule],
 })
 export class DashboardComponent implements OnInit, OnDestroy {
   availableTickets: number = 0;
@@ -41,11 +25,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
   private isStopped: boolean = false;
   logs: string[] = [];
 
-  public chartOptions: Partial<ChartOptions> | any;
-
-  constructor(private http: HttpClient) {
-    
-  }
+  constructor(private http: HttpClient) {}
 
   ngOnInit(): void {
     this.startPolling();
@@ -58,7 +38,6 @@ export class DashboardComponent implements OnInit, OnDestroy {
   startPolling() {
     this.pollingSubscription = interval(500).subscribe(() => {
       this.getTicketCount();
-    
     });
   }
 
@@ -72,11 +51,9 @@ export class DashboardComponent implements OnInit, OnDestroy {
           this.availableTickets = response.availableTickets;
           this.ticketsSold = response.ticketsSold;
           this.isStopped = false;
-    
         },
         (error) => {
           console.error('Error fetching ticket count', error);
-
           if (!this.isStopped) {
             this.message =
               'Application is stopped. Ticket count not available.';
@@ -85,7 +62,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
         }
       );
   }
-  
+
   startVendor() {
     if (
       !this.vendorId ||
@@ -95,10 +72,12 @@ export class DashboardComponent implements OnInit, OnDestroy {
     ) {
       this.message =
         'Please enter valid positive values for Vendor ID and Ticket  Release Rate.';
-        this.addLog('Invalid vendor input detected.');
+      this.addLog('Invalid vendor input detected.');
       return;
     }
-    this.addLog(`Vendor ${this.vendorId} started with rate ${this.ticketReleaseRate} ms.`);
+    this.addLog(
+      `Vendor ${this.vendorId} started with rate ${this.ticketReleaseRate} ms.`
+    );
     this.http
       .post('http://localhost:8080/api/ticketing/start-vendor', null, {
         params: {
@@ -128,10 +107,12 @@ export class DashboardComponent implements OnInit, OnDestroy {
     ) {
       this.message =
         'Please enter valid positive values for Customer ID and Customer Retrieval Rate.';
-        this.addLog('Invalid customer input detected.');
+      this.addLog('Invalid customer input detected.');
       return;
     }
-    this.addLog(`Customer ${this.customerId} started with rate ${this.customerRetrievalRate} ms.`);
+    this.addLog(
+      `Customer ${this.customerId} started with rate ${this.customerRetrievalRate} ms.`
+    );
     this.http
       .post('http://localhost:8080/api/ticketing/start-customer', null, {
         params: {
@@ -173,6 +154,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
         this.message = `Max pool tickets set to ${this.maxPoolTickets}`;
       });
   }
+
   addLog(message: string): void {
     const timestamp = new Date().toISOString();
     this.logs.push(`[${timestamp}] ${message}`);
@@ -180,8 +162,8 @@ export class DashboardComponent implements OnInit, OnDestroy {
 
   clearLogs(): void {
     this.logs = [];
-    this.addLog('Logs cleared.');
   }
+
   stopAll() {
     this.http
       .post('http://localhost:8080/api/ticketing/stop', null, {
@@ -191,8 +173,6 @@ export class DashboardComponent implements OnInit, OnDestroy {
         (response) => {
           this.message = 'System stopped and reset.';
           this.isStopped = true;
-
-          // Reset frontend values
           this.availableTickets = 0;
           this.ticketsSold = 0;
           this.vendorId = 0;
@@ -201,20 +181,18 @@ export class DashboardComponent implements OnInit, OnDestroy {
           this.customerRetrievalRate = 0;
           this.maxEventTickets = 1000;
           this.maxPoolTickets = 200;
-
-          // Unsubscribe from polling
           if (this.pollingSubscription) {
             this.pollingSubscription.unsubscribe();
           }
-          this.addLog('Emergency stop triggered.');
+          this.addLog('System stopped and reset.');
         },
         (error) => {
           console.error('Error stopping and resetting system', error);
           this.message = 'Failed to stop and reset system.';
         }
-        
       );
   }
+
   ngOnDestroy(): void {
     if (this.pollingSubscription) {
       this.pollingSubscription.unsubscribe();

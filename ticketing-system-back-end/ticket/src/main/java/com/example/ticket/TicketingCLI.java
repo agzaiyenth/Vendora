@@ -23,7 +23,6 @@ public class TicketingCLI {
         Logger rootLogger = Logger.getLogger("");
         rootLogger.setLevel(Level.OFF);
 
-        // Remove all handlers to ensure no logs are printed
         for (Handler handler : rootLogger.getHandlers()) {
             rootLogger.removeHandler(handler);
         }
