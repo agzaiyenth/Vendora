@@ -1,13 +1,10 @@
 package com.example.ticket;
-
 import com.example.ticket.config.AppConfig;
 import com.example.ticket.controllers.TicketingController;
 import com.example.ticket.services.TicketPoolService;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
-
 import java.util.InputMismatchException;
 import java.util.Scanner;
-import java.util.logging.ConsoleHandler;
 import java.util.logging.Handler;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -76,7 +73,7 @@ public class TicketingCLI {
                     break;
                 case 7:
                     running = false;
-                    System.out.println("Exiting... Goodbye!");
+                    System.out.println("Thank you for using Ticketing System, Exiting.....");
                     break;
                 default:
                     System.out.println("Invalid choice. Please try again.");
