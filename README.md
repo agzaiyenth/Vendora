@@ -125,3 +125,64 @@ Displays ticket statistics (available and sold).
 
 ## Controls
 Buttons to start/stop the system and add vendors/customers dynamically.
+
+# API Documentation 
+
+# Ticketing System API Documentation
+
+The Ticketing System provides many API resources that enable vendors and customers to release and purchase tickets simultaneously.
+
+## Authentication
+
+Currently, the Ticketing System APIs do not require explicit authentication as this is a local system designed for coursework.
+
+## API Endpoints
+
+Below are the available endpoints and their functionalities:
+
+### 1. `/api/ticketing/start-vendor`
+**Method**: `POST`  
+**Description**: Start the ticketing process for a vendor.
+
+### 2. `/api/ticketing/set-max-event-tickets`
+**Method**: `POST`  
+**Description**: Set the maximum number of tickets available for an event.
+
+### 3. `/api/ticketing/start-customer`
+**Method**: `POST`  
+**Description**: Start the ticketing process for a customer.
+
+### 4. `/api/ticketing/stop`
+**Method**: `POST`  
+**Description**: Stop the ticketing system and halt ticket allocations.
+
+### 5. `/api/ticketing/status`
+**Method**: `GET`  
+**Description**: Check the current status of the ticketing system.
+
+## Common Error Responses
+
+| Status Code | Description                                          |
+|-------------|------------------------------------------------------|
+| `400`       | Bad Request – Invalid or missing parameters.         |
+| `401`       | Unauthorized – API key or token is missing or invalid. |
+| `404`       | Not Found – The requested endpoint or resource does not exist. |
+| `500`       | Internal Server Error – Unexpected server error.    |
+
+## Example Request for `/api/ticketing/status`
+
+### Request:
+```bash
+GET http://localhost:8080/api/ticketing/status
+
+```
+### Respone : 
+
+```bash
+
+{
+  "availableTickets": 100,
+  "soldTickets": 200
+}
+
+```
