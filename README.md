@@ -1,7 +1,7 @@
 # Vendora - A Event Ticketing System
 
 ## Introduction
-The Real-Time Event Ticketing System is a application for managing ticket releases and purchases in real-time. The system ensures data integrity through multi-threading and synchronization, supporting the following features:
+The Event Ticketing System is a application for managing ticket releases and purchases in real-time. The system ensures data integrity through multi-threading and synchronization, supporting the following features:
 - Setting maximum ticket limits for events and ticket pools.
 - Adding vendors to release tickets and customers to purchase them at configurable rates.
 - Monitoring ticket availability and sales.
